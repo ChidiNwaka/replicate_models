@@ -1,4 +1,5 @@
 import sys 
+import os
 import replicate
 from datetime import datetime
 
@@ -11,11 +12,14 @@ def generateImage(prompt):
         }
     )
 
-    with open(f'{unique_filename}', "wb") as f:
+    os.makedirs("images", exist_ok=True)
+
+    # build path to the new file
+    output_path = os.path.join(os.getcwd(), "images", unique_filename)
+    
+    with open(output_path, "wb") as f:
         f.write(output[0].read())
     
-    print(f"Image saved as output.png")
-
 def generateSentence(prompt):
     # The meta/llama-2-7b model can stream output as it's running.
     for event in replicate.run(
